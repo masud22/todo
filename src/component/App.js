@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import "./App.css";
 import TodoList from "./TodoList";
+import uuid from "react-uuid";
 const KEY_TODO = "todo.key";
 
 export default function App() {
@@ -24,7 +25,7 @@ export default function App() {
     setTodo((prevTodo) => {
       return [
         {
-          id: todoRef.current.value,
+          id: uuid(),
           name: todoRef.current.value,
           isComplete: false,
         },
@@ -38,6 +39,11 @@ export default function App() {
     const clicked = newTodo.find((x) => x.id === id);
     clicked.isComplete = !clicked.isComplete;
     setTodo(newTodo);
+  }
+  function deleteTodo(id) {
+    const newTodo = [...todo];
+    const notClicked = newTodo.filter((todo) => todo.id !== id);
+    setTodo(notClicked);
   }
   function handleClearTodo(e) {
     e.preventDefault();
@@ -55,22 +61,21 @@ export default function App() {
 
   return (
     <div className="app">
-      <img
-        className="logo"
-        src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Amazon_logo.svg/1024px-Amazon_logo.svg.png"
-        alt=""
-      />
+      <h1>ReactJS Todo</h1>
+
       <form className="form">
         <div className="inputform">
-          <input placeholder="Add Todo..." ref={todoRef} />
+          <input placeholder="Add Todo..." ref={todoRef} maxLength="30" />
           <button onClick={handleSubmit}>Add</button>
-          <button onClick={handleClearTodo}>Clear</button>
+          <button onClick={handleClearTodo} title="Delete selected todos">
+            Delete
+          </button>
         </div>
-        <div>
+        <div className="left__todo">
           <input type="checkbox" onChange={handleSelectAll} />
-          Todo left ({todo.filter((todo) => !todo.isComplete).length})
+          <p>({todo.filter((todo) => !todo.isComplete).length})</p>
         </div>
-        <TodoList todo={todo} toggleTodo={toggleTodo} />
+        <TodoList todo={todo} toggleTodo={toggleTodo} deleteTodo={deleteTodo} />
       </form>
     </div>
   );

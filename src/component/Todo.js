@@ -1,9 +1,12 @@
 import React from "react";
 import "./Todo.css";
 
-function Todo({ todo, toggleTodo }) {
+function Todo({ todo, toggleTodo, deleteTodo }) {
   function handleChange() {
     toggleTodo(todo.id);
+  }
+  function handleDelete() {
+    deleteTodo(todo.id);
   }
 
   return (
@@ -13,7 +16,10 @@ function Todo({ todo, toggleTodo }) {
         checked={todo.isComplete}
         onChange={handleChange}
       />
-      <label>{todo.name}</label>
+      <label onClick={handleChange} title="Select">
+        {todo.name}
+      </label>
+      <div onClick={handleDelete}>delete</div>
     </div>
   );
 }
