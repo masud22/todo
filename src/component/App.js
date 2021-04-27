@@ -2,6 +2,8 @@ import React, { useRef, useState, useEffect } from "react";
 import "./App.css";
 import TodoList from "./TodoList";
 import uuid from "react-uuid";
+import Button from "@material-ui/core/Button";
+
 const KEY_TODO = "todo.key";
 
 export default function App() {
@@ -21,7 +23,9 @@ export default function App() {
 
   function handleSubmit(params) {
     params.preventDefault();
-    if (todoRef.current.value === "") return;
+    if (todoRef.current.value === "") {
+      return;
+    }
     setTodo((prevTodo) => {
       return [
         {
@@ -45,7 +49,7 @@ export default function App() {
     const notClicked = newTodo.filter((todo) => todo.id !== id);
     setTodo(notClicked);
   }
-  function handleClearTodo(e) {
+  function handleClearAll(e) {
     e.preventDefault();
     const newTodo = todo.filter((x) => !x.isComplete);
     setTodo(newTodo);
@@ -66,14 +70,29 @@ export default function App() {
       <form className="form">
         <div className="inputform">
           <input placeholder="Add Todo..." ref={todoRef} maxLength="30" />
-          <button onClick={handleSubmit}>Add</button>
-          <button onClick={handleClearTodo} title="Delete selected todos">
+          <Button
+            onClick={handleSubmit}
+            type="submit"
+            variant="contained"
+            color="primary"
+          >
+            Add
+          </Button>
+
+          <Button
+            onClick={handleClearAll}
+            variant="contained"
+            color="secondary"
+          >
             Delete
-          </button>
+          </Button>
+
+          {/* <button onClick={handleClearAll}>Delete</button>
+          <button onClick={handleSubmit}>Add</button> */}
         </div>
         <div className="left__todo">
           <input type="checkbox" onChange={handleSelectAll} />
-          <p>({todo.filter((todo) => !todo.isComplete).length})</p>
+          <label>({todo.filter((todo) => !todo.isComplete).length})</label>
         </div>
         <TodoList todo={todo} toggleTodo={toggleTodo} deleteTodo={deleteTodo} />
       </form>

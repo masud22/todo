@@ -1,5 +1,7 @@
 import React from "react";
 import "./Todo.css";
+import { IconButton } from "@material-ui/core";
+import DeleteIcon from "@material-ui/icons/Delete";
 
 function Todo({ todo, toggleTodo, deleteTodo }) {
   function handleChange() {
@@ -16,10 +18,15 @@ function Todo({ todo, toggleTodo, deleteTodo }) {
         checked={todo.isComplete}
         onChange={handleChange}
       />
+
       <label onClick={handleChange} title="Select">
         {todo.name}
       </label>
-      <div onClick={handleDelete}>delete</div>
+
+      <IconButton onClick={handleDelete} aria-label="delete">
+        <DeleteIcon fontSize="medimu" />
+      </IconButton>
+      {/* <div onClick={handleDelete}>delete</div> */}
     </div>
   );
 }
